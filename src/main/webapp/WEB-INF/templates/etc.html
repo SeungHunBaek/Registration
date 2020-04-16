@@ -1,0 +1,9 @@
+<form action="fileDownload" id="fileDownloadForm" method="post">
+	<input type="hidden" id="PdfPath" name="PdfPath" value="${pdfPath}">
+	<button type="button" class="btn btn-primary" onclick="window.open('${pdfLinkPath}')">
+		<i class="fa fa-eye"></i>
+	</button>
+	<button type="button" class="btn btn-danger" onclick="submit()">
+		<i class="fa fa-file-pdf-o"></i>
+	</button>
+</form>

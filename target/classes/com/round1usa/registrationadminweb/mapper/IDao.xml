@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.round1usa.registrationadminweb.dao.RegistrationDao">
+	<select id="viewStoreList" resultType="com.round1usa.registrationadminweb.dto.StoreDto">
+		SELECT * FROM store_master ORDER BY store_id ASC
+	</select>
+
+	<select id="agreementStoreCount" resultType="java.math.BigInteger" parameterType="java.util.Map">
+		select count(*) from (
+			select registration_info.parent_name
+			from registration_info left outer join store_master
+	    	on registration_info.store_id = store_master.store_id
+	    <where>
+	    	1=1
+	    	<if test="store_id != null and store_id != 'admin'">
+				AND registration_info.store_id = #{store_id}
+			</if>
+	    	<if test="storeName != null and storeName != 'Undefined'">
+				AND store_master.store_name = #{storeName}
+			</if>
+			<if test="storeName != null and storeName == 'Undefined'">
+				AND store_master.store_name is null
+			</if>
+			<if test="parentName != null and phone != null">
+				AND (
+					registration_info.parent_name like #{parentName}
+					OR registration_info.phone like #{phone}
+				)
+			</if>
+		</where>
+	    ) _t1
+
+	</select>
+	<select id="agreementStoreList" resultType="com.round1usa.registrationadminweb.dto.Agreement">
+		select
+			registration_info.*,
+			store_master.store_name
+		from registration_info left outer join store_master
+	    	on registration_info.store_id = store_master.store_id
+	    <if test="param1 != null">
+		<where>
+			1=1
+			<if test="param4 != 'admin'">
+				AND registration_info.store_id = #{param4}
+			</if>
+	    	<if test="param1.storeName != null and param1.storeName != 'Undefined'">
+				AND store_master.store_name = #{param1.storeName}
+			</if>
+			<if test="param1.storeName != null and param1.storeName == 'Undefined'">
+				AND store_master.store_name is null
+			</if>
+			<if test="param1.parentName != null and param1.phone != null">
+				AND (
+					   registration_info.parent_name like #{param1.parentName}
+					OR registration_info.phone like #{param1.phone}
+				)
+			</if>
+		</where>
+		</if>
+		order by info_num desc
+	    <if test="param2 != null and param3 != null">
+	    limit #{param2}, #{param3}
+	    </if>
+	</select>
+
+	<select id="checkStoreId"  resultType="com.round1usa.registrationadminweb.dto.StoreDto">
+		SELECT * FROM store_master WHERE store_id = #{param1}
+	</select>
+	<update id="updateStoreInfo" >
+		UPDATE store_master
+			SET store_id = #{param2}, store_name = #{param3}, update_datetime = sysdate(), store_password=#{param4}
+				WHERE store_id = #{param1}
+	</update>
+	<delete id="deleteStoreInfo">
+		DELETE FROM store_master WHERE store_id = #{param1}
+	</delete>
+	<insert id="insertStoreInfo">
+		INSERT INTO store_master VALUES(#{param1}, #{param2}, sysdate(), sysdate(), #{param3});
+	</insert>
+
+</mapper>
