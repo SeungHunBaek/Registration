@@ -1,0 +1,9 @@
+.loader {
+	width: 120px;
+	height: 120px;
+	background-image: url("loader.gif");
+	margin: 0 auto;
+	position:absolute;
+  top:44%;
+  left:43%;
+}

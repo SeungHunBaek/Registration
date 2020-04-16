@@ -1,0 +1,8 @@
+{
+	"name": "relationship",
+	"options": {
+		"-- select --" : "select",
+		"Parents": "Parents",
+		"Legal Guardian": "Legal Guardian"
+	}
+}

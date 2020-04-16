@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{yyyy/MM/dd HH:mm:ss.SSS}][%-5p][%c][%t] - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="application" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/RegistrationWeb-kids-application.log" />
+		<param name="Threshold" value="INFO" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyyMMdd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{yyyy/MM/dd HH:mm:ss.SSS}][%-5p][%c][%t] - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- package -->
+	<category name="com.round1usa.registration">
+		<priority value="info" />
+		<appender-ref ref="application" />
+	</category>
+
+	<!-- log Mybatis SQL -->
+	<category name="com.round1usa.registration.mapper">
+		<priority value="warn" />
+	</category>
+
+	<!-- Spring Framework -->
+	<category name="org.springframework">
+		<priority value="warn" />
+	</category>
+
+	<!-- HTML template engine -->
+	<category name="org.thymeleaf">
+		<priority value="warn" />
+	</category>
+
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="stdout" />
+	</root>
+</log4j:configuration>

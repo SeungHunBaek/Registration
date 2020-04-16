@@ -1,0 +1,136 @@
+<div id="page-input">
+	<div id="div_header" class="div_header_padding_top_7">
+		<span style="font-size: x-large">
+			<b>Waiver Agreement for KIDS PLAY ZONE</b>
+		</span>
+	</div>
+
+	<div id="div_comment" class="div_comment">
+		<p class="p_header_explain">
+			<font size="2em" >Account information:
+				<br /> 1. Please enter participant and guardian's information. Information must be filled in completely.
+				<br /> 2. Check the box for acknowledgement and agreement.
+				<br /> 3. Sign and press NEXT button
+			</font>
+		</p>
+	</div>
+	<div>
+		<p class="p_size">
+			<label class="label_size"><strong >Are you over the age of 18?</strong></label>
+			<label class="label_size">
+				<input type="radio" name="agree" class="input_radio_size"   value="yes"/>Yes
+			</label>
+
+			<label	class="label_size">
+				<input type="radio" name="agree" class="input_radio_size"  value="no"/>No
+			</label>
+
+			<label class="label_size">
+				<strong>(*You must be the age of 18 or older to sign this waiver)</strong>
+			</label>
+		</p>
+		<form id="inputForm" name="inputForm">
+			<fieldset>
+				<div>
+					<div class="p_size">
+						<label class="label_block">
+							<strong>1.Participant Name</strong>
+						</label>
+						<input name="list[0].name" type="text" class="input_text_size" id="participantName0" maxlength="50" autocomplete="off" />
+
+						<div class="line block-gender">
+							<font>
+								<strong style="margin-left: 5%">Gender</strong>
+							</font>
+							<span style="padding-right: 4px;" class="participant-0 block-gender-values">
+								<font><input type="radio" name="list[0].gender" value="Male" class="input_radio_size"/>Male</font>
+								<font><input type="radio" name="list[0].gender" value="Female" class="input_radio_size"/>Female</font>
+							</span>
+						</div>
+
+						<div class="line block-birth">
+							<font><strong style="margin-left: 5%">Date of Birth </strong></font>
+							<input type="date" name="list[0].birthDay" value="1997-01-01" id="birthDay0" class="input_date_size" />
+						</div>
+					</div>
+
+					<div class="p_size">
+						<label class="label_block">
+							<strong>2.Participant Name</strong>
+						</label>
+						<input type="text" id="participantName1" name="list[1].name" class="input_text_size" maxlength="50" autocomplete="off"   />
+
+						<div class="line block-gender">
+							<label><strong style="margin-left: 5%">Gender</strong></label>
+							<span style="padding-right: 4px;" class="participant-1 block-gender-values">
+							<font>
+								<input type="radio" name="list[1].gender" value="man" disabled="disabled" class="input_radio_size" />Male
+							</font>
+							<font>
+								<input type="radio" name="list[1].gender" value="female" class="input_radio_size" disabled="disabled"  />Female
+							</font>
+							</span>
+						</div>
+						<div class="line block-birth">
+							<font><strong style="margin-left: 5%">Date of Birth</strong></font>
+							<input type="date" id="birthDay1" name="list[1].birthDay" value="1997-01-01" class="input_date_size" disabled="disabled" />
+						</div>
+					</div>
+			</div>
+			</fieldset>
+
+			<fieldset>
+				<div>
+					<div>
+						<label class="label_block">
+							<strong>Parent /Legal Guardian Name</strong></label>
+							<input type="text" name="parentName" id="parentName" class="input_text_size" maxlength="50" autocomplete="off" />
+						<div class="line block-relationship">
+							<common-select name="relationship" class="label_padding" id="relationship" label="Relationship With Listed Participant" item="vm.relationship">
+							</common-select>
+						</div>
+					</div>
+					<p style="margin: 15px 0 15px 0">
+						<label class="label_block"><strong>Address</strong></label>
+						<input type="text" name="address" id ="address" class="input_text_size" maxlength="50" autocomplete="off" />
+					</p>
+					<label class="label_block"><strong>City</strong></label>
+						<input	type="text" id="city" name="city" class="input_text_size" maxlength="50" autocomplete="off" />
+					<div class="line block-state">
+						<label	class="label_padding"><strong style="margin-left: 15%">State</strong></label>
+						<input	type="text" name="state" id="state" class="input_text_size" maxlength="50" autocomplete="off"/>
+					</div>
+					<p>
+						<label class="label_block"><strong>Zip Code</strong></label>
+						<input	type="tel" id="zipcode" name="zipCode" class="input_number_size" maxlength="20" autocomplete="off"/>
+					</p>
+
+					<p>
+						<label class="label_block"><strong>Contact Phone Number</strong></label>
+						<tel-input input-id="phone" input-name="phone" input-placeholder="phone" maxlength="20" input-autocomplete="off" on-load="vm.focus"/>
+					</p>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<div>
+					<p>
+					<input type="checkbox" id="infoCheck" name="infoCheck" />
+					<label id="lbl_check" for="infoCheck"><strong>
+						I have acknowledged and agreed to the above terms and conditions. All information I have provided are accurate.
+					</strong></label>
+					</p>
+				</div>
+			</fieldset>
+				<input type="hidden" name="countryCode">
+
+				<div id="signDiv" style="margin: 10px;">
+						<font class="label"><strong>Parent / Legal Guardian Signature</strong></font><br>
+						<img id="sign" style="display: none;" /><br>
+						<signature-pad id="onDraw" input-name="onDraw" on-load="vm.focus"></signature-pad>
+
+						<input type="hidden" id="flag"  value="false"/>
+				</div>
+		</form>
+	</div>
+</div>

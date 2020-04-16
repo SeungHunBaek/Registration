@@ -1,0 +1,61 @@
+#page-webcam {
+	background-color: rgb(98,186,38);
+	min-height: 100vh;
+}
+
+#page-webcam button {
+    background-color: rgb(255,0,0); /* Red */
+    vertical-align: middle;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+#page-webcam .contents {
+	width: 99%;
+	margin:0 auto ;
+	height: 54% ;
+	position: relative;
+}
+
+#page-webcam .picPart {
+	position: absolute;
+	top: 0;
+	left: 28%;
+}
+
+#page-webcam #frame {
+	position: absolute;
+	top: 0;
+	left: 29.5%;
+	margin-top:3.5%;
+}
+
+#page-webcam #btn_shoot {
+	width: 92%;
+	position: absolute;
+	margin-top: 3%;
+	left:4%;
+}
+
+#page-webcam #div_bottom {
+	display: none;
+	margin-top: 3%;
+	position: relative;
+}
+
+#page-webcam .afterButton {
+	width: 46.6%;
+}
+
+#page-webcam #canvas {
+	display: none;
+}
+

@@ -1,0 +1,53 @@
+#page-top {
+	background-color: rgb(231,0,0);
+}
+
+#page-top #finger {
+	animation-name : size;
+	animation-duration : 1s;
+	animation-iteration-count: infinite;
+	width: 90px;
+	position: absolute;
+	left: 75%;
+	top: 59%;
+}
+
+@keyframes size {
+    from   {transform: scale(0.8);}
+    to  {transform: scale(1.0);}
+}
+
+#page-top #div_title {
+	text-align: center;
+	color: white;
+	font-size: 400%;
+	font-weight: bold;
+	font-family: verdana;
+	margin: 3%;
+}
+#page-top #div_center{
+	text-align: center;
+	padding: 1%;
+	position: relative;
+}
+#page-top #div_comment {
+	color: white;
+	font-size: 100%;
+	font-family: verdana;
+	margin: 3%;
+	margin-left: 21%;
+	line-height: 4px;
+}
+
+img[alt]{font-size:3.75em;}
+
+#page-top #btn {
+	max-width: 60%;
+	margin: 10px;
+}
+
+#page-top #btn_Round1 {
+	max-width:18%;
+	margin-left: 15px;
+	margin-top: 20px;
+}

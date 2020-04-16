@@ -1,0 +1,29 @@
+#page-complete {
+	background-color: rgb(51, 204, 204);
+}
+
+#page-complete .padding_top{
+	padding-top: 7px;
+}
+
+#page-complete .p_margin{
+	margin-left: 2em;
+	line-height: 16px;
+}
+
+#page-complete .div_comment_border{
+	border-bottom: 1px solid black;
+	border-width: 80%;
+	margin-bottom: 0.5em;
+
+}
+
+#page-complete #div_header p {
+	font-weight: bold;
+	font-size: 150%;
+}
+
+#page-complete #div_center {
+	text-align: center;
+	padding-top: 10%;
+}

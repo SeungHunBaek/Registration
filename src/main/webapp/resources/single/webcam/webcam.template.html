@@ -1,0 +1,39 @@
+<div id="page-webcam">
+	<div id="div_header" style="padding-top: 7px;">
+			<span style="font-size: x-large"><b>Waiver Agreement for KIDS PLAY ZONE</b></span>
+		</div>
+
+		<div id="div_comment" style="border-bottom: 1px solid black; border-width: 80%; margin-bottom: 0.5em;">
+			<p style="margin-left: 2em; line-height: 16px;">
+				<font size="2em"  >
+	 				Please take a picture of your photo ID with the following instructions:<br />
+					1. Have your photo ID ready.<br />
+					2. Place your photo ID facing the camera. <br />
+					3. Adjust to fit within the frame. Make sure your face and information is showing clearly.<br />
+					4. Press the “SHOOT” button to take a picture.
+				</font>
+			</p>
+		</div>
+
+	<div class="contents" id="div_center" align="center" >
+		<video class="picPart" width="44%" id="video" data-ng-show="vm.showCameraDisplay" poster="resources/img/poster.png"></video>
+		<img class="picPart" width="43.8%" id="pic"/>
+		<img id="frame" src="resources/img/frame_webcam_yellow.png" width="41%">
+
+	</div>
+
+	<div id="div_capture" align="center">
+		<Button type="button" id="btn_shoot"
+			data-ng-click="vm.btnShoot()"
+			data-ng-show="vm.showCameraDisplay">
+			Shoot
+		</Button>
+	</div>
+
+	<div id="div_bottom" align="center">
+		<Button class="afterButton" type="button" id="btn_again" data-ng-click="vm.btnAgain()">Again</Button>
+		<Button class="afterButton" type="button" id="btn_ok" data-ng-click="vm.agree()">OK</Button>
+	</div>
+
+	<canvas id="canvas" width="400" height="300"></canvas>
+</div>

@@ -1,0 +1,103 @@
+<head
+    xmlns:th="http://www.thymeleaf.org"
+	th:fragment="common_header">
+	<!-- meta -->
+	<meta charset="utf-8" />
+	<meta charset="utf-8" name="viewport" content="initial-scale=1.0" />
+
+	<!-- title -->
+	<title>The awesome application</title>
+
+	<!-- css -->
+	<link th:href="@{/resources/single/app.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/top/top.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/consent/consent.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/input/input.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/webcam/webcam.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/print/loader/loader.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/complete/complete.css}" rel="stylesheet" />
+	<link th:href="@{/resources/single/complete/complete.css}" rel="stylesheet" />
+	<link th:href="@{/resources/css/intlTelInput.css}" rel="stylesheet" />
+
+	<script>
+	var _time1 = new Date().getTime();
+	window.addEventListener('load', function() {
+		var time2 = new Date().getTime();
+		console.log('[PERF] [window] page load: ' + (time2 - _time1) + ' ms');
+
+		delete window['_time1'];
+
+		// remove splash screen
+		$('#page-splash').remove();
+	}, false);
+	</script>
+</head>
+
+<div xmlns:th="http://www.thymeleaf.org"
+	th:fragment="common_script">
+	<!-- angular.js -->
+	<script th:src="@{/resources/js/angular/angular.min.js}"></script>
+	<script th:src="@{/resources/js/angular/angular-animate.min.js}"></script>
+	<script th:src="@{/resources/js/angular/angular-route.min.js}"></script>
+	<script th:src="@{/resources/js/angular/angular-sanitize.min.js}"></script>
+
+	<!-- jquery -->
+	<script th:src="@{/resources/js/jquery.min.js}"></script>
+
+	<!-- signaturepad -->
+	<script th:src="@{/resources/js/signature_pad.js}" async="async"></script>
+
+	<!-- international phone -->
+	<script th:src="@{/resources/js/intlTelInput.js}"></script>
+
+	<!-- native -->
+	<script th:src="@{/resources/js/native_bridge.js}"	src="resources/js/native_bridge.js" async="async"></script>
+
+	<!-- common module -->
+	<script th:src="@{/resources/single/common/common.module.js}"></script>
+	<script th:src="@{/resources/single/common/directive/common-select.directive.js}"></script>
+	<script th:src="@{/resources/single/common/factory/common-store.factory.js}"></script>
+	<script th:src="@{/resources/single/common/factory/common-http.factory.js}"></script>
+	<script th:src="@{/resources/single/common/factory/pdfmake.factory.js}"></script>
+	<script th:src="@{/resources/single/common/factory/native-bridge.factory.js}"></script>
+
+	<!-- app -->
+	<script th:src="@{/resources/single/app.module.js}"></script>
+	<script th:src="@{/resources/single/app.config.js}"></script>
+	<script th:src="@{/resources/single/app.constant.js}"></script>
+	<script th:src="@{/resources/single/app.run.js}"></script>
+
+	<!-- config -->
+	<script th:src="@{/resources/single/config/config.module.js}"></script>
+	<script th:src="@{/resources/single/config/config.config.js}"></script>
+	<script th:src="@{/resources/single/config/config.controller.js}"></script>
+
+	<!-- top -->
+	<script th:src="@{/resources/single/top/top.module.js}"></script>
+	<script th:src="@{/resources/single/top/top.config.js}"></script>
+	<script th:src="@{/resources/single/top/top.controller.js}"></script>
+
+	<!-- consent -->
+	<script th:src="@{/resources/single/consent/consent.module.js}"></script>
+	<script th:src="@{/resources/single/consent/consent.config.js}"></script>
+	<script th:src="@{/resources/single/consent/consent.controller.js}"></script>
+	<script th:src="@{/resources/single/consent/consent.directive.js}"></script>
+
+	<!-- input -->
+	<script th:src="@{/resources/single/input/input.module.js}"></script>
+	<script th:src="@{/resources/single/input/input.config.js}"></script>
+	<script th:src="@{/resources/single/input/input.controller.js}"></script>
+
+	<script th:src="@{/resources/single/input/tel-input/tel-input.directive.js}"></script>
+	<script th:src="@{/resources/single/input/signature-pad/signature-pad.directive.js}"></script>
+
+	<!-- webcam -->
+	<script th:src="@{/resources/single/webcam/webcam.module.js}"></script>
+	<script th:src="@{/resources/single/webcam/webcam.config.js}"></script>
+	<script th:src="@{/resources/single/webcam/webcam.controller.js}"></script>
+
+	<!-- complete -->
+	<script th:src="@{/resources/single/complete/complete.module.js}"></script>
+	<script th:src="@{/resources/single/complete/complete.config.js}"></script>
+	<script th:src="@{/resources/single/complete/complete.controller.js}"></script>
+</div>

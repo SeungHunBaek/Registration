@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html data-ng-app="registrationWebApp" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="single/base :: common_header"></head>
+<body>
+
+
+
+	<!-- Angular.js Single View Page -->
+	<div class="view-wrapper">
+		<!-- Splash Screen -->
+		<div id="page-splash" style="background-color: red;">
+
+			<div class="loader">
+				<h2 align="center" style="color: white;">Loading</h2>
+			</div>
+		</div>
+		<div class="animate" data-ng-cloak="ng-cloak" data-ng-view=""></div>
+	</div>
+
+<div th:replace="single/base :: common_script"></div>
+</body>
+</html>

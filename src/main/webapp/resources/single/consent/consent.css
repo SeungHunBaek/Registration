@@ -1,0 +1,76 @@
+#page-consent {
+	background: rgb(255,255,0);
+}
+
+#page-consent .padding_top{
+	padding-top: 7px;
+
+}
+#page-consent .footer_text_align{
+	text-align: right
+}
+
+
+#page-consent .div_float_margin_top{
+	float: right;
+	margin-top: 25px;
+}
+
+#page-consent .margin_line_height{
+	margin-left: 2em;
+	line-height: 16px;
+}
+
+#page-consent .div_margin{
+	margin-left: 2em;
+	margin-right: 1em;
+}
+
+#page-consent .text_align{
+	text-align: right;
+}
+
+
+
+#page-consent ol {
+    color: red;
+}
+
+#page-consent #privacy-terms {
+	width: 100%;
+	height: 343px;
+	overflow: auto;
+	background: #eee;
+}
+
+#page-consent #privacy-terms p {
+    padding: 0 1em;
+    line-height: 1.3;
+}
+
+#page-consent #div_comment {
+	border-bottom: 1px solid black;
+	border-width: 80%;
+	margin-bottom: 1em;
+}
+
+#page-consent input {
+    background-color: rgb(255,0,0); /* Red */
+    vertical-align: middle;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 20%;
+}
+
+#page-consent input[type="button"]:disabled {
+	background-color: gray;
+}

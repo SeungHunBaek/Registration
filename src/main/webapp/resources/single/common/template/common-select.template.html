@@ -1,0 +1,4 @@
+<label for="{{ id }}" style="font-weight: bold; margin-left: 14%; width:200px;  display: inline-block;">{{ label }}</label>
+<select id="{{ id }}" name="{{ ::item.name }}" style="height:24px;">
+	<option value="{{ ::value }}" data-ng-repeat="(name, value) in ::item.options" data-ng-bind="::name"></option>
+</select>

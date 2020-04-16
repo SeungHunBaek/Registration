@@ -1,0 +1,32 @@
+<div id="page-consent">
+	<div id="div_header" class="padding_top" >
+		<span style="font-size: x-large; ">
+			<b>Waiver Agreement for	KIDS PLAY ZONE</b>
+		</span>
+		<div class="div_float_margin_top" >
+			<label>Today's Date &nbsp;{{ ::vm.today }}</label>
+		</div>
+	</div>
+
+		<div id="div_comment">
+			<p class="margin_line_height">
+				<font size="2em"> Content of the Waiver Agreement:<br />
+					1. Please read agreement carefully till the end. <br />
+					2. You will need to scroll all the way to the bottom then press AGREE button.  <br />
+				</font>
+			</p>
+		</div>
+
+		<div>
+			<div id="privacy-terms" data-app-privacy-scroll>
+				<div id="privacy-wrapper" class="div_margin"  data-ng-bind-html="::vm.privacyHTML"></div>
+			</div>
+		</div>
+		<div class="text_align" >Please read till the end.</div>
+
+		<footer class="footer_text_align" >
+			<a href="#app/input"> <input type="button" value="AGREE"
+				id="i-agree" name="i-agree" disabled="disabled" />
+			</a>
+		</footer>
+</div>
