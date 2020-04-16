@@ -1,0 +1,27 @@
+{
+  "coverage": "66.66%",
+  "expectCount": 12,
+  "actualCount": 8,
+  "files": {
+    "src/pdf/DocDefinition.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        41,
+        42,
+        46,
+        43
+      ]
+    },
+    "src/input/InputAsync.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/output/OutputAsync.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    }
+  }
+}

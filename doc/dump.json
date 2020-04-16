@@ -1,0 +1,1119 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "name": "src/input/InputAsync.js",
+    "content": "\"use strict\";\n\n/**\n * 非同期処理 (入力)\n */\nclass InputAsync {\n\n  /**\n   * InputAsync(input) コンストラクタ\n   * @param {ReadableStream} input 入力ストリーム\n   */\n  constructor(/* ReadableStream */ input) {\n    /**\n     * メンバー: 入力ストリーム\n     * @type {ReadableStream}\n     */\n    this.input = input;\n  }\n\n　/**\n   * 内部関数 \"processInputData\"を呼び出す。\n   * (入力ストリームから入力データを取得する。)\n   * @returns {Promise} 非同期処理\n   */\n  /* Promise */ process() {\n    return processInputData(this.input);\n  }\n}\n\n/**\n * 入力ストリームから入力データを取得する。\n * @param   {ReadableStream} 入力ストリーム\n * @returns {Promise} 非同期処理\n */\nfunction processInputData(/* ReadableStream */ input) {\n  var promise = new Promise(function (resolve, reject) {\n    var body = [];\n    input.resume();\n\n    // データを読み込む際\n    input.on(\"data\", function (chunk) {\n      body.push(chunk);\n    });\n\n    // 読み込み処理が終わったら\n    input.on(\"end\", function() {\n      // JSON文字列をObjectに変更し、次の処理に渡す。\n      resolve(JSON.parse(Buffer.concat(body).toString()));\n    });\n  });\n\n  return promise;\n}\n\nmodule.exports = InputAsync;\n",
+    "static": true,
+    "longname": "src/input/InputAsync.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 1,
+    "kind": "function",
+    "name": "processInputData",
+    "memberof": "src/input/InputAsync.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/input/InputAsync.js~processInputData",
+    "access": null,
+    "export": false,
+    "importPath": "registration-pdf/src/input/InputAsync.js",
+    "importStyle": null,
+    "description": "入力ストリームから入力データを取得する。",
+    "lineNumber": 35,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise} 非同期処理"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "ReadableStream"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "入力ストリーム",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": "非同期処理"
+    }
+  },
+  {
+    "__docId__": 2,
+    "kind": "class",
+    "name": "InputAsync",
+    "memberof": "src/input/InputAsync.js",
+    "static": true,
+    "longname": "src/input/InputAsync.js~InputAsync",
+    "access": null,
+    "export": true,
+    "importPath": "registration-pdf/src/input/InputAsync.js",
+    "importStyle": "InputAsync",
+    "description": "非同期処理 (入力)",
+    "lineNumber": 6,
+    "interface": false
+  },
+  {
+    "__docId__": 3,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/input/InputAsync.js~InputAsync",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/input/InputAsync.js~InputAsync#constructor",
+    "access": null,
+    "description": "InputAsync(input) コンストラクタ",
+    "lineNumber": 12,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "ReadableStream"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input",
+        "description": "入力ストリーム"
+      }
+    ]
+  },
+  {
+    "__docId__": 4,
+    "kind": "member",
+    "name": "input",
+    "memberof": "src/input/InputAsync.js~InputAsync",
+    "static": false,
+    "longname": "src/input/InputAsync.js~InputAsync#input",
+    "access": null,
+    "description": "メンバー: 入力ストリーム",
+    "lineNumber": 17,
+    "type": {
+      "nullable": null,
+      "types": [
+        "ReadableStream"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 5,
+    "kind": "method",
+    "name": "process",
+    "memberof": "src/input/InputAsync.js~InputAsync",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/input/InputAsync.js~InputAsync#process",
+    "access": null,
+    "description": "内部関数 \"processInputData\"を呼び出す。\n(入力ストリームから入力データを取得する。)",
+    "lineNumber": 25,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise} 非同期処理"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": "非同期処理"
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "file",
+    "name": "src/output/OutputAsync.js",
+    "content": "\"use strict\";\nvar pdfPrinter = require(\"pdfmake/src/printer\");\n\n// フォント定義 (該当するフォントのファイルパスを指定する。)\nconst fonts = {\n    Roboto: {\n        normal:      \"./fonts/Roboto-Regular.ttf\",\n        bold:        \"./fonts/Roboto-Medium.ttf\",\n        italics:     \"./fonts/Roboto-Italic.ttf\",\n        bolditalics: \"./fonts/Roboto-Italic.ttf\"\n    }\n};\n\n/**\n * PDFmakeの出力処理\n * @type {pdfPrinter}\n * @private\n */\nvar printer = new pdfPrinter(fonts);\n\n/**\n * 非同期処理 (出力)\n */\nclass OutputAsync {\n  /**\n   * InputAsync(input) コンストラクタ\n   * @param {WritableStream} output 出力ストリーム\n   */\n  constructor (output) {\n    /**\n     * メンバー: 出力ストリーム\n     * @type {WritableStream}\n     */\n    this.output = output;\n  }\n\n  /**\n   * PDFデータを出力ストリームに送信する。\n   * @param {Object} docDefinition ドキュメント定義(pdfmake)\n   */\n  process (docDefinition) {\n    // pdfmakeのプリンタオブジェクトを生成\n    var pdfDoc = printer.createPdfKitDocument(docDefinition);\n\n    // 出力先指定\n    pdfDoc.pipe(this.output);\n\n    // データ送信\n    pdfDoc.end();\n  }\n}\n\nmodule.exports = OutputAsync;\n",
+    "static": true,
+    "longname": "src/output/OutputAsync.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 7,
+    "kind": "variable",
+    "name": "pdfPrinter",
+    "memberof": "src/output/OutputAsync.js",
+    "static": true,
+    "longname": "src/output/OutputAsync.js~pdfPrinter",
+    "access": null,
+    "export": false,
+    "importPath": "registration-pdf/src/output/OutputAsync.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "variable",
+    "name": "fonts",
+    "memberof": "src/output/OutputAsync.js",
+    "static": true,
+    "longname": "src/output/OutputAsync.js~fonts",
+    "access": null,
+    "export": false,
+    "importPath": "registration-pdf/src/output/OutputAsync.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "{\"Roboto\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 9,
+    "kind": "variable",
+    "name": "printer",
+    "memberof": "src/output/OutputAsync.js",
+    "static": true,
+    "longname": "src/output/OutputAsync.js~printer",
+    "access": "private",
+    "export": false,
+    "importPath": "registration-pdf/src/output/OutputAsync.js",
+    "importStyle": null,
+    "description": "PDFmakeの出力処理",
+    "lineNumber": 19,
+    "type": {
+      "nullable": null,
+      "types": [
+        "pdfPrinter"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "class",
+    "name": "OutputAsync",
+    "memberof": "src/output/OutputAsync.js",
+    "static": true,
+    "longname": "src/output/OutputAsync.js~OutputAsync",
+    "access": null,
+    "export": true,
+    "importPath": "registration-pdf/src/output/OutputAsync.js",
+    "importStyle": "OutputAsync",
+    "description": "非同期処理 (出力)",
+    "lineNumber": 24,
+    "interface": false
+  },
+  {
+    "__docId__": 11,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/output/OutputAsync.js~OutputAsync",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/output/OutputAsync.js~OutputAsync#constructor",
+    "access": null,
+    "description": "InputAsync(input) コンストラクタ",
+    "lineNumber": 29,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "WritableStream"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "output",
+        "description": "出力ストリーム"
+      }
+    ]
+  },
+  {
+    "__docId__": 12,
+    "kind": "member",
+    "name": "output",
+    "memberof": "src/output/OutputAsync.js~OutputAsync",
+    "static": false,
+    "longname": "src/output/OutputAsync.js~OutputAsync#output",
+    "access": null,
+    "description": "メンバー: 出力ストリーム",
+    "lineNumber": 34,
+    "type": {
+      "nullable": null,
+      "types": [
+        "WritableStream"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 13,
+    "kind": "method",
+    "name": "process",
+    "memberof": "src/output/OutputAsync.js~OutputAsync",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/output/OutputAsync.js~OutputAsync#process",
+    "access": null,
+    "description": "PDFデータを出力ストリームに送信する。",
+    "lineNumber": 41,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "docDefinition",
+        "description": "ドキュメント定義(pdfmake)"
+      }
+    ]
+  },
+  {
+    "__docId__": 14,
+    "kind": "file",
+    "name": "src/pdf/DocDefinition.js",
+    "content": "\"use strict\";\n\nfunction createParticipants(inputData) {\n  var participants = [];\n\n  participants.push({\n    style: 'tableMargin',\n    table: {\n      widths: [95, 120, 40,60, 70,90],\n      body: [\n        [\n          { text: 'Participant Name'},{text: inputData.list[0].name || '' },\n          { text: 'Gender'},{text:  inputData.list[0].gender || '' },\n          { text: 'Date of Birth'},{text: inputData.list[0].birthDay || '' }\n        ]\n      ]\n    }\n  });\n\n  if (inputData.list.length == 2 && inputData.list[1].name !== '') {\n    participants.push({\n      style: 'tableMargin',\n      table: {\n        widths: [95, 120, 40,60, 70,90],\n        body: [\n          [\n            { text: 'Participant Name'},{text: inputData.list[1].name || '' },\n            { text: 'Gender'},{text:  inputData.list[1].gender || '' },\n            { text: 'Date of Birth'},{text: inputData.list[1].birthDay || '' }\n          ]\n        ]\n      }\n    });\n  } else {\n    participants.push({ text: '' });\n  }\n\n  return participants;\n}\n\nclass DocDefinition {\n  constructor(inputData) {\n    this.inputData = inputData;\n  }\n\n  get() {\n    var inputData = this.inputData;\n    var participants = createParticipants(inputData);\n    var logoPath = __dirname + '/../../images/Round1-Logo.PNG';\n\n    var docDefinition = {\n      footer: function(currentPage, pageCount) {\n        return {\n          columns: [\n            {\n              alignment: 'center',\n              text: [ currentPage.toString(), ' to ', pageCount.toString() ]\n            }\n          ]\n        }\n      },\n\n      content: [\n        { //title\n          stack: [\n            {\n              table: {\n                widths: ['*', 'auto'],\n                body:\n                [\n                  [\n                    'Waiver Agreement for KIDS PLAY ZONE',\n                    {\n                      image: logoPath,\n                      fit: [100, 100]\n                    }\n                  ]\n                ]\n              },\n              layout: 'noBorders'\n            },\n            {\n              text: 'Today\\'s Date : '+ inputData.today, style: 'subheader'\n            }\n          ],\n          style: 'header'\n        },\n        {\n          text: '1. Content of the Waiver Agreement ', style: 'list_form'\n        },\n        { //content\n  \t    \tstyle: 'superMargin',\n  \t\t    text: [\n\t          '1. Participant(s) in the Kids Play Zone MUST be 12 years old or younger and accompanied by a Parent or Guardian at all times.'\n            +'\\n\\n2. All persons between the age of 13 and 17 years are PROHIBITED from entering the Kids Play Zone for any reason.'\n            +'\\n\\n3. All Parents/Guardians must be at least 18 years old.'\n            +'\\n\\n4. Parents/Guardians are PROHIBITED from leaving the Kids Play Zone without the Participant(s).'\n            +'\\n\\n5. A maximum of two (2) Participant children are allowed per Parent/Guardian.'\n            +'\\n\\n6. Any medical condition that may hinder the Participant child’s enjoyment of the Kids Play Zone must be reported to our staff.'\n            +'\\n\\n7. All participants and Parents/Guardians must keep the stickers (issued at counter) on at all times and not remove it while in the Kids Play Zone.'\n            +'\\n\\n8. No shoes are allowed inside the Kids Play Zone. Socks are required to be worn by everyone in the Kids Play Zone, adults included. Bare feet are not allowed.'\n            +'\\n\\n9. Sharp objects, including but not limited to, knives, needles, pins, and cutters, are not allowed inside the Kids Play Zone.'\n            +'\\n\\n10. Certain activities within the Kids Play Zone are restricted to toddlers or small children only, and Parents/Guardians and Participants agree to abide by such restrictions.'\n            +'\\n\\n11. Children must be fully clothed in clean, dry clothes when playing in the Kids Play Zone.'\n            +'   Children who are being potty-trained must wear a diaper. Children who are “newly” potty-trained must have an extra set of clean clothes readily available in the event of an accident. Round One staff must be immediately notified of any such urine or fecal spills in the Kids Play Zone.'\n            +'\\n\\n12. All food and drinks are prohibited in the Kids Play Zone.'\n            +'\\n\\n13. Chewing gum is prohibited inside the Kids Play Zone.'\n            +'\\n\\n14. All jewelry and loose articles must be removed before entering the Kids Play Zone.'\n            +'\\n\\n15. Round One reserves the right to stop any and all activities in the Kids Play Zone and to remove any Participants and guests at Round One’s sole and absolute discretion without a refund.'\n            +'\\n\\n16. Participants and guests who fail to comply with these rules may be denied admission or removed from the Kids Play Zone and/or Round One’s premises without a refund.'\n            +'\\n\\n17. Round One is not responsible for any damages or loss related to damaged or lost clothing, jewelry and/or other personal belongings.'\n            +'\\n\\n18. All Participants and guests will be held liable for any damage to Round One’s equipment and/or facilities.'\n            +'\\n\\n19. Participants and guests who are feeling sick must comply with Round One’s requests to leave the Kids Play Zone and/or Round One’s premises.'\n  \t\t\t  ]\n\t\t  \t},\n        {\n\t  \t\t\tpageBreak: 'before',\n\t  \t\t\ttext: '2. Account Information',\n\t  \t\t\tstyle: 'list_form'\n\t  \t\t},\n        {\n  \t\t    text:'Are you over the age of 18? : Yes'\n  \t            +'\\n*(You must be the age of 18 or older to sign this waiver)' ,\n  \t\t    style:''\n    \t\t},\n    \t\tparticipants[0],\n    \t\tparticipants[1],\n        {\n\t  \t\t\tstyle: 'tableMargin',\n\t  \t\t\ttable: {\n\t        \twidths: [90, 180, 70,155],\n\t  \t\t\t\tbody: [\n\t  \t\t\t\t\t['Parent / Legal Guardian Name', inputData.parentName,'Relationship with Listed', inputData.relationship],\n\t  \t        [{ colSpan: 1,text: 'Contact Phone \\nNumber \\n{REQUIRED}'},{ colSpan: 3,text: inputData.phone},'','']\n\t  \t\t\t\t]\n\t  \t\t\t}\n\t  \t\t},\n        {\n\t  \t\t\ttext: '3. Parent / Legal Guardian Signature',\n\t  \t\t\tstyle: 'list_form'\n\t  \t\t},\n\t  \t\t{\n\t  \t\t\ttable: {\n\t\t\t\t\tbody: [\n\t\t\t\t\t\t[{\n    \t\t\t      border: [true, true, true, true],\n    \t\t\t\t    image: inputData.signImgData,\n    \t\t    \t  width: 230,\n    \t\t  \t\t  height: 100,\n    \t\t      \talignment: 'center',\n    \t\t        margin : [10,10,10,10]\n  \t\t       }],\n  \t\t\t\t ]\n  \t\t\t\t}\n\t\t  \t},\n        {\n\t  \t\t\ttext: '4. Parent / Legal Guardian License',\n\t  \t\t\tstyle: 'list_form'\n\t  \t\t},\n        {\n\t  \t\t\ttable: {\n\t\t\t\t\tbody: [\n\t\t\t\t\t\t[{\n    \t\t\t    border: [true, true, true, true],\n    \t\t\t\t  image: inputData.cameraImgData,\n    \t\t    \twidth: 293,\n    \t\t  \t\theight: 220,\n    \t\t      alignment: 'left',\n    \t\t      margin : [5,5,5,5]\n\t\t        }],\n\t\t\t\t\t]\n\t\t\t\t}\n\n\t  \t\t},\n      ],\n\n      styles: {\n        header: {\n          fontSize: 18,\n          bold: true,\n          alignment: 'left',\n          margin: [0, 30, 0, 20]\n        },\n\n        subheader: {\n          fontSize: 10,\n          alignment: 'right',\n          margin: [0, 10, 10, 0]\n        },\n\n        superMargin: {\n          margin: [10, 0, 15, 10],\n          fontSize: 10\n        },\n\n        list_form: {\n          fontSize: 13,\n          bold: true,\n          alignment: 'left',\n          margin: [0, 0, 15, 10]\n        },\n\n        tableMargin: {\n          margin: [10, 10, 10, 10]\n        },\n\n        imgalignment: {\n          width: 10,\n          height: 10\n        }\n      }\n    }\n\n    return docDefinition;\n  }\n}\n\nmodule.exports = DocDefinition;\n",
+    "static": true,
+    "longname": "src/pdf/DocDefinition.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 15,
+    "kind": "function",
+    "name": "createParticipants",
+    "memberof": "src/pdf/DocDefinition.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/pdf/DocDefinition.js~createParticipants",
+    "access": null,
+    "export": false,
+    "importPath": "registration-pdf/src/pdf/DocDefinition.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "inputData",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "class",
+    "name": "DocDefinition",
+    "memberof": "src/pdf/DocDefinition.js",
+    "static": true,
+    "longname": "src/pdf/DocDefinition.js~DocDefinition",
+    "access": null,
+    "export": true,
+    "importPath": "registration-pdf/src/pdf/DocDefinition.js",
+    "importStyle": "DocDefinition",
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 17,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/pdf/DocDefinition.js~DocDefinition",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/pdf/DocDefinition.js~DocDefinition#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 42,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "inputData",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 18,
+    "kind": "member",
+    "name": "inputData",
+    "memberof": "src/pdf/DocDefinition.js~DocDefinition",
+    "static": false,
+    "longname": "src/pdf/DocDefinition.js~DocDefinition#inputData",
+    "access": null,
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 19,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/pdf/DocDefinition.js~DocDefinition",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/pdf/DocDefinition.js~DocDefinition#get",
+    "access": null,
+    "description": null,
+    "lineNumber": 46,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 49,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 50,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 52,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 53,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 54,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 55,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 56,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 57,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 58,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 59,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 60,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 61,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 62,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 63,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 64,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 65,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 66,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 67,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "lineNumber": 193,
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "external",
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "external",
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 71,
+    "kind": "external",
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 72,
+    "kind": "external",
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 73,
+    "kind": "external",
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 74,
+    "kind": "external",
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 75,
+    "kind": "external",
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 76,
+    "kind": "external",
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "lineNumber": 34,
+    "builtinExternal": true
+  }
+]

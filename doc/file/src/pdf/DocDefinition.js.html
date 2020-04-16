@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/pdf/DocDefinition.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">input</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/input/InputAsync.js~InputAsync.html">InputAsync</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">output</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/output/OutputAsync.js~OutputAsync.html">OutputAsync</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">pdf</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/pdf/DocDefinition.js~DocDefinition.html">DocDefinition</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/pdf/DocDefinition.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+
+function createParticipants(inputData) {
+  var participants = [];
+
+  participants.push({
+    style: &apos;tableMargin&apos;,
+    table: {
+      widths: [95, 120, 40,60, 70,90],
+      body: [
+        [
+          { text: &apos;Participant Name&apos;},{text: inputData.list[0].name || &apos;&apos; },
+          { text: &apos;Gender&apos;},{text:  inputData.list[0].gender || &apos;&apos; },
+          { text: &apos;Date of Birth&apos;},{text: inputData.list[0].birthDay || &apos;&apos; }
+        ]
+      ]
+    }
+  });
+
+  if (inputData.list.length == 2 &amp;&amp; inputData.list[1].name !== &apos;&apos;) {
+    participants.push({
+      style: &apos;tableMargin&apos;,
+      table: {
+        widths: [95, 120, 40,60, 70,90],
+        body: [
+          [
+            { text: &apos;Participant Name&apos;},{text: inputData.list[1].name || &apos;&apos; },
+            { text: &apos;Gender&apos;},{text:  inputData.list[1].gender || &apos;&apos; },
+            { text: &apos;Date of Birth&apos;},{text: inputData.list[1].birthDay || &apos;&apos; }
+          ]
+        ]
+      }
+    });
+  } else {
+    participants.push({ text: &apos;&apos; });
+  }
+
+  return participants;
+}
+
+class DocDefinition {
+  constructor(inputData) {
+    this.inputData = inputData;
+  }
+
+  get() {
+    var inputData = this.inputData;
+    var participants = createParticipants(inputData);
+    var logoPath = __dirname + &apos;/../../images/Round1-Logo.PNG&apos;;
+
+    var docDefinition = {
+      footer: function(currentPage, pageCount) {
+        return {
+          columns: [
+            {
+              alignment: &apos;center&apos;,
+              text: [ currentPage.toString(), &apos; to &apos;, pageCount.toString() ]
+            }
+          ]
+        }
+      },
+
+      content: [
+        { //title
+          stack: [
+            {
+              table: {
+                widths: [&apos;*&apos;, &apos;auto&apos;],
+                body:
+                [
+                  [
+                    &apos;Waiver Agreement for KIDS PLAY ZONE&apos;,
+                    {
+                      image: logoPath,
+                      fit: [100, 100]
+                    }
+                  ]
+                ]
+              },
+              layout: &apos;noBorders&apos;
+            },
+            {
+              text: &apos;Today\&apos;s Date : &apos;+ inputData.today, style: &apos;subheader&apos;
+            }
+          ],
+          style: &apos;header&apos;
+        },
+        {
+          text: &apos;1. Content of the Waiver Agreement &apos;, style: &apos;list_form&apos;
+        },
+        { //content
+  	    	style: &apos;superMargin&apos;,
+  		    text: [
+	          &apos;1. Participant(s) in the Kids Play Zone MUST be 12 years old or younger and accompanied by a Parent or Guardian at all times.&apos;
+            +&apos;\n\n2. All persons between the age of 13 and 17 years are PROHIBITED from entering the Kids Play Zone for any reason.&apos;
+            +&apos;\n\n3. All Parents/Guardians must be at least 18 years old.&apos;
+            +&apos;\n\n4. Parents/Guardians are PROHIBITED from leaving the Kids Play Zone without the Participant(s).&apos;
+            +&apos;\n\n5. A maximum of two (2) Participant children are allowed per Parent/Guardian.&apos;
+            +&apos;\n\n6. Any medical condition that may hinder the Participant child&#x2019;s enjoyment of the Kids Play Zone must be reported to our staff.&apos;
+            +&apos;\n\n7. All participants and Parents/Guardians must keep the stickers (issued at counter) on at all times and not remove it while in the Kids Play Zone.&apos;
+            +&apos;\n\n8. No shoes are allowed inside the Kids Play Zone. Socks are required to be worn by everyone in the Kids Play Zone, adults included. Bare feet are not allowed.&apos;
+            +&apos;\n\n9. Sharp objects, including but not limited to, knives, needles, pins, and cutters, are not allowed inside the Kids Play Zone.&apos;
+            +&apos;\n\n10. Certain activities within the Kids Play Zone are restricted to toddlers or small children only, and Parents/Guardians and Participants agree to abide by such restrictions.&apos;
+            +&apos;\n\n11. Children must be fully clothed in clean, dry clothes when playing in the Kids Play Zone.&apos;
+            +&apos;   Children who are being potty-trained must wear a diaper. Children who are &#x201C;newly&#x201D; potty-trained must have an extra set of clean clothes readily available in the event of an accident. Round One staff must be immediately notified of any such urine or fecal spills in the Kids Play Zone.&apos;
+            +&apos;\n\n12. All food and drinks are prohibited in the Kids Play Zone.&apos;
+            +&apos;\n\n13. Chewing gum is prohibited inside the Kids Play Zone.&apos;
+            +&apos;\n\n14. All jewelry and loose articles must be removed before entering the Kids Play Zone.&apos;
+            +&apos;\n\n15. Round One reserves the right to stop any and all activities in the Kids Play Zone and to remove any Participants and guests at Round One&#x2019;s sole and absolute discretion without a refund.&apos;
+            +&apos;\n\n16. Participants and guests who fail to comply with these rules may be denied admission or removed from the Kids Play Zone and/or Round One&#x2019;s premises without a refund.&apos;
+            +&apos;\n\n17. Round One is not responsible for any damages or loss related to damaged or lost clothing, jewelry and/or other personal belongings.&apos;
+            +&apos;\n\n18. All Participants and guests will be held liable for any damage to Round One&#x2019;s equipment and/or facilities.&apos;
+            +&apos;\n\n19. Participants and guests who are feeling sick must comply with Round One&#x2019;s requests to leave the Kids Play Zone and/or Round One&#x2019;s premises.&apos;
+  			  ]
+		  	},
+        {
+	  			pageBreak: &apos;before&apos;,
+	  			text: &apos;2. Account Information&apos;,
+	  			style: &apos;list_form&apos;
+	  		},
+        {
+  		    text:&apos;Are you over the age of 18? : Yes&apos;
+  	            +&apos;\n*(You must be the age of 18 or older to sign this waiver)&apos; ,
+  		    style:&apos;&apos;
+    		},
+    		participants[0],
+    		participants[1],
+        {
+	  			style: &apos;tableMargin&apos;,
+	  			table: {
+	        	widths: [90, 180, 70,155],
+	  				body: [
+	  					[&apos;Parent / Legal Guardian Name&apos;, inputData.parentName,&apos;Relationship with Listed&apos;, inputData.relationship],
+	  	        [{ colSpan: 1,text: &apos;Contact Phone \nNumber \n{REQUIRED}&apos;},{ colSpan: 3,text: inputData.phone},&apos;&apos;,&apos;&apos;]
+	  				]
+	  			}
+	  		},
+        {
+	  			text: &apos;3. Parent / Legal Guardian Signature&apos;,
+	  			style: &apos;list_form&apos;
+	  		},
+	  		{
+	  			table: {
+					body: [
+						[{
+    			      border: [true, true, true, true],
+    				    image: inputData.signImgData,
+    		    	  width: 230,
+    		  		  height: 100,
+    		      	alignment: &apos;center&apos;,
+    		        margin : [10,10,10,10]
+  		       }],
+  				 ]
+  				}
+		  	},
+        {
+	  			text: &apos;4. Parent / Legal Guardian License&apos;,
+	  			style: &apos;list_form&apos;
+	  		},
+        {
+	  			table: {
+					body: [
+						[{
+    			    border: [true, true, true, true],
+    				  image: inputData.cameraImgData,
+    		    	width: 293,
+    		  		height: 220,
+    		      alignment: &apos;left&apos;,
+    		      margin : [5,5,5,5]
+		        }],
+					]
+				}
+
+	  		},
+      ],
+
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          alignment: &apos;left&apos;,
+          margin: [0, 30, 0, 20]
+        },
+
+        subheader: {
+          fontSize: 10,
+          alignment: &apos;right&apos;,
+          margin: [0, 10, 10, 0]
+        },
+
+        superMargin: {
+          margin: [10, 0, 15, 10],
+          fontSize: 10
+        },
+
+        list_form: {
+          fontSize: 13,
+          bold: true,
+          alignment: &apos;left&apos;,
+          margin: [0, 0, 15, 10]
+        },
+
+        tableMargin: {
+          margin: [10, 10, 10, 10]
+        },
+
+        imgalignment: {
+          width: 10,
+          height: 10
+        }
+      }
+    }
+
+    return docDefinition;
+  }
+}
+
+module.exports = DocDefinition;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "registration-pdf",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "pdfmake js server",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pdfmake": "^0.1.27"
+  }
+}
